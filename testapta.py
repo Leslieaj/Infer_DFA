@@ -14,7 +14,7 @@ def buildword(stringlist, traintype):
         return trainlist
 
 def main():
-    s_pos = ["abaa", "bb", "a"]
+    s_pos = ["abaa", "a", "bb"]
     s_neg = ["abb", "b"]
     train_pos = buildword(s_pos, WordType.pos)
     train_neg = buildword(s_neg, WordType.neg)
