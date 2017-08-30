@@ -1,6 +1,6 @@
 """ construct augmented prefix tree acceptor."""
-from enumtype import NodeType, NodeColor, WordType
 import copy
+from enumtype import NodeType, NodeColor, WordType
 
 class Node(object):
     """class Node for the nodes in APTA"""
@@ -56,10 +56,10 @@ class Node(object):
                     return True, tran.get_targetid()
             return False, None
 
-    """finding the targets of out transitions with same labels,
-       it return a dictionary {label1:[taget_node_id,...], label2:[target_node_id,...],...}
-    """
     def nondeterministic_targets_dict(self):
+        """finding the targets of out transitions with same labels,
+           it return a dictionary {label1:[taget_node_id,...], label2:[target_node_id,...],...}
+        """
         dictionary = {}
         temp_outtrans = copy.deepcopy(self.out_trans)
         for out_tran in self.out_trans:
@@ -167,8 +167,9 @@ class APTA(object):
                 else:
                     node.set_nodetype(NodeType.rejecting)
 
-    """list like: [[...], [...], [...],...]"""
+    
     def has_nondeterministic(self):
+        """ list like: [[...], [...], [...],...] """
         nondeterministic_list = []
         for node in self.nodeset:
             dictionary = node.nondeterministic_targets_dict()

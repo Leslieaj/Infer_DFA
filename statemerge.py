@@ -1,11 +1,10 @@
 """ functions : state-merging methords of different frammework"""
-
+import copy
 from apta import APTA, Node
 from enumtype import NodeType
-import copy
 
 def merge(apta=None, node1=None, node2=None):
-    if isinstance(apta, APTA) or isinstance(node1, Node) or isinstance(node1, Node):
+    if isinstance(apta, APTA) or isinstance(node1, Node) or isinstance(node2, Node):
         return None, False
 
     node1_type = node1.get_nodetype()
