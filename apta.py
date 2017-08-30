@@ -23,12 +23,16 @@ class Node(object):
         self.in_trans.append(in_tran)
     def remove_in_tran(self, in_tran):
         pass
+    def set_in_trans(self, in_tran_list):
+        self.in_trans = in_tran_list 
     def get_in_trans(self):
         return self.in_trans
 
     def add_out_tran(self, out_tran):
         #self.out_trans = self.out_trans + [out_tran]
         self.out_trans.append(out_tran)
+    def set_out_trans(self, out_tran_list):
+        self.out_trans = out_tran_list
     def get_out_trans(self):
         return self.out_trans
 
