@@ -20,7 +20,14 @@ def merge(apta=None, node1=None, node2=None):
         combined_node.set_nodetype(NodeType.rejecting)
     if node1_type == NodeType.accepting or node2_type == NodeType.accepting:
         combined_node.set_nodetype(NodeType.accepting)
-    replace_node_by_combined_node(node1, node2, combined_node)
 
-def replace_node_by_combined_node(node1, node2, combined_node):
+    replace_node_by_combined_node(temp_apta, node1, node2, combined_node)
+
+    nondeterministic = has_non_deterministic(temp_apta)
+
+
+def replace_node_by_combined_node(apta, node1, node2, combined_node):
     pass
+
+def has_non_deterministic(temp_apta):
+    return 0
