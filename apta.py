@@ -97,10 +97,11 @@ class TrainWord(str):
 
 class APTA(object):
     """ class APTA : the augmented prefix tree acceptor for training set"""
-    def __init__(self):
+    def __init__(self, pos_training, neg_training):
         self.root = Node(nodeid=0, isroot=True)
         self.nodeset = [self.root]
         self.transitionset = []
+        self.construct(pos_training, neg_training)
 
     def add_node(self, node=None):
         self.nodeset.append(node)

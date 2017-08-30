@@ -18,8 +18,8 @@ def main():
     s_neg = ["abb", "b"]
     train_pos = buildword(s_pos, WordType.pos)
     train_neg = buildword(s_neg, WordType.neg)
-    apta = APTA()
-    apta.construct(train_pos, train_neg)
+    apta = APTA(train_pos, train_neg)
+    #apta.construct(train_pos, train_neg)
     apta.show_apta_info()
 
 if __name__ == '__main__':
