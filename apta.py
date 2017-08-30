@@ -3,8 +3,8 @@ from enumtype import NodeType, NodeColor, WordType
 
 class Node(object):
     """class Node for the nodes in APTA"""
-    def __init__(self, nodeid, nodetype=NodeType.unknown,\
-     nodecolor=NodeColor.white, isroot=False):
+    def __init__(self, nodeid, nodetype=NodeType.unknown, \
+    nodecolor=NodeColor.white, isroot=False):
         self.nodeid = nodeid
         self.in_trans = []
         self.out_trans = []
@@ -18,14 +18,16 @@ class Node(object):
         return self.nodeid
 
     def add_in_tran(self, in_tran):
-        self.in_trans = self.in_trans + [in_tran]
+        #self.in_trans = self.in_trans + [in_tran]
+        self.in_trans.append(in_tran)
     def remove_in_tran(self, in_tran):
         pass
     def get_in_trans(self):
         return self.in_trans
 
     def add_out_tran(self, out_tran):
-        self.out_trans = self.out_trans + [out_tran]
+        #self.out_trans = self.out_trans + [out_tran]
+        self.out_trans.append(out_tran)
     def get_out_trans(self):
         return self.out_trans
 
