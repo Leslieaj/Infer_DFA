@@ -1,5 +1,6 @@
 """ construct augmented prefix tree acceptor."""
 from enumtype import NodeType, NodeColor, WordType
+import copy
 
 class Node(object):
     """class Node for the nodes in APTA"""
@@ -54,6 +55,23 @@ class Node(object):
                 if tran.label == label:
                     return True, tran.get_targetid()
             return False, None
+
+    """finding the targets of out transitions with same labels,
+       it return a dictionary {label1:[taget_node_id,...], label2:[target_node_id,...],...}
+    """
+    def nondeterministic_targets_dict(self):
+        dictionary = {}
+        temp_outtrans = copy.deepcopy(self.out_trans)
+        for out_tran in self.out_trans:
+            same_label_targets = []
+            out_label = out_tran.get_label()
+            for temp_tran in temp_outtrans:
+                if temp_tran.get_label() == out_label:
+                    same_label_targets.append(temp_tran.get_targetid())
+                    temp_outtrans.remove(temp_tran)
+            if len(same_label_targets) > 0:
+                dictionary[out_label] = same_label_targets
+        return dictionary
 
 class Transition(object):
     """class Transition for the transitions in APTA"""
@@ -148,6 +166,14 @@ class APTA(object):
                     node.set_nodetype(NodeType.accepting)
                 else:
                     node.set_nodetype(NodeType.rejecting)
+
+    """list like: [[...], [...], [...],...]"""
+    def has_nondeterministic(self):
+        nondeterministic_list = []
+        for node in self.nodeset:
+            dictionary = node.nondeterministic_targets_dict()
+            nondeterministic_list += dictionary.values()
+        return nondeterministic_list
 
     def show_apta_info(self):
         for node in self.nodeset:
