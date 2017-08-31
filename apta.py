@@ -1,4 +1,5 @@
 """ construct augmented prefix tree acceptor."""
+
 import copy
 from enumtype import NodeType, NodeColor, WordType
 
@@ -77,6 +78,14 @@ class Node(object):
                 dictionary[out_label] = same_label_targets
         return dictionary
 
+    def show_out_trans(self):
+        for tran in self.get_out_trans():
+            traninfo = 'tran_id: ' + str(tran.get_id()) + ' ' \
+            + 'label: ' + tran.get_label() + ' ' \
+            + 'source_id: ' + str(tran.get_sourceid()) + ' ' \
+            + 'target_id: ' + str(tran.get_targetid()) + '\n'
+            print traninfo
+
 class Transition(object):
     """class Transition for the transitions in APTA"""
     def __init__(self, transid, label="", sourceid=None, targetid=None):
@@ -129,14 +138,13 @@ class APTA(object):
         self.nodeset.append(node)
 
     def del_node_by_id(self, nodeid):
-        """delete a node of the apta and delete its in and out transitions
-            from transitionset of the apta"""
+        """delete a node of the apta"""
         node = self.find_node_by_id(nodeid)
         if node is None:
             return False
         else:
             self.nodeset.remove(node)
-            self.del_trans_by_nodeid(node.get_id())
+            #self.del_trans_by_nodeid(node.get_id())
             return True
 
     def find_node_by_id(self, nodeid):
@@ -178,7 +186,6 @@ class APTA(object):
                 i = 1
                 stringlen = len(train_string)
                 while i <= stringlen:
-                    #print train_string
                     label = train_string[i-1]
                     haslabel, targetid = node.has_out_tran_by_label(label)
                     if not haslabel:
@@ -213,9 +220,10 @@ class APTA(object):
             + 'root: ' + str(node.is_root()) + ' ' \
             + 'type: '+ NodeType.to_str(node.get_nodetype()) + '\n'
             print nodeinfo
-            for tran in node.get_out_trans():
-                traninfo = 'tran_id: ' + str(tran.get_id()) + ' ' \
-                + 'label: ' + tran.get_label() + ' ' \
-                + 'source_id: ' + str(tran.get_sourceid()) + ' ' \
-                + 'target_id: ' + str(tran.get_targetid()) + '\n'
-                print traninfo
+            for tran in self.transitionset:
+                if tran.get_sourceid() == node.get_id():
+                    traninfo = 'tran_id: ' + str(tran.get_id()) + ' ' \
+                    + 'label: ' + tran.get_label() + ' ' \
+                    + 'source_id: ' + str(tran.get_sourceid()) + ' ' \
+                    + 'target_id: ' + str(tran.get_targetid()) + '\n'
+                    print traninfo
