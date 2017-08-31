@@ -1,6 +1,6 @@
 """ construct augmented prefix tree acceptor."""
 
-import copy
+# import copy
 from enumtype import NodeType, NodeColor, WordType
 
 class Node(object):
@@ -63,20 +63,20 @@ class Node(object):
 
     def nondeterministic_targets_dict(self):
         """finding the targets of out transitions with same labels,
-           it return a dictionary {label1:[taget_node_id,...], label2:[target_node_id,...],...}
+           it return a list [[taget_node_id,...], [target_node_id,...],...]
         """
         dictionary = {}
-        temp_outtrans = copy.deepcopy(self.out_trans)
-        for out_tran in self.out_trans:
-            same_label_targets = []
-            out_label = out_tran.get_label()
-            for temp_tran in temp_outtrans:
-                if temp_tran.get_label() == out_label:
-                    same_label_targets.append(temp_tran.get_targetid())
-                    temp_outtrans.remove(temp_tran)
-            if len(same_label_targets) > 0:
-                dictionary[out_label] = same_label_targets
-        return dictionary
+        nondeterministic_pair_list = []
+        for tran in self.out_trans:
+            dictionary[tran.get_label()] = []
+        for tran in self.out_trans:
+            for k in dictionary.keys():
+                if tran.get_label() == k:
+                    dictionary[k].append(tran.get_id())
+        for k in dictionary.keys():
+            if len(dictionary[k]) > 1:
+                nondeterministic_pair_list.append(dictionary[k])
+        return nondeterministic_pair_list
 
     def show_out_trans(self):
         for tran in self.get_out_trans():
@@ -213,13 +213,13 @@ class APTA(object):
                 else:
                     node.set_nodetype(NodeType.rejecting)
 
-    def has_nondeterministic(self):
-        """ list like: [[...], [...], [...],...] """
-        nondeterministic_list = []
-        for node in self.nodeset:
-            dictionary = node.nondeterministic_targets_dict()
-            nondeterministic_list += dictionary.values()
-        return nondeterministic_list
+    # def has_nondeterministic(self):
+    #     """ list like: [[...], [...], [...],...] """
+    #     nondeterministic_list = []
+    #     for node in self.nodeset:
+    #         dictionary = node.nondeterministic_targets_dict()
+    #         nondeterministic_list += dictionary.values()
+    #     return nondeterministic_list
 
     def show_apta_info(self):
         for node in self.nodeset:

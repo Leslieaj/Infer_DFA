@@ -16,7 +16,15 @@ def merge(apta=None, node1=None, node2=None):
 
     temp_apta = copy.deepcopy(apta)
 
-    combine_node(temp_apta, node1.get_id(), node2.get_id())
+    combined_node = combine_node(temp_apta, node1.get_id(), node2.get_id())
+
+    nondeterministic_list = combined_node.nondeterministic_targets_dict()
+    for nondeterministic_pair in nondeterministic_list:
+        temp_node1 = temp_apta.find_node_by_id(nondeterministic_pair[0])
+        temp_node2 = temp_apta.find_node_by_id(nondeterministic_pair[-1])
+        _, merge_success = merge(temp_apta, temp_node1, temp_node2)
+        if merge_success is False:
+            return apta, False
 
     return temp_apta, True
 
@@ -27,7 +35,7 @@ def combine_node(apta, node1_id, node2_id):
     """Combine node1 and node2, let the node having smaller id as the combined node, change the
      transitions and remove the node having bigger id. Refine the apta and return"""
     if node1_id == node2_id:
-        return apta
+        return apta.find_node_by_id(node1_id)
 
     [smaller_id, bigger_id] = [node1_id, node2_id] if node1_id < node2_id else [node2_id, node1_id]
     keep_node = apta.find_node_by_id(smaller_id)
@@ -64,7 +72,9 @@ def combine_node(apta, node1_id, node2_id):
     keep_node.out_trans.extend(remove_node.out_trans)
     apta.del_node_by_id(bigger_id)
 
-    return apta
+    apta.show_apta_info()
+    print "*****************************************************************\n"
+    return keep_node
 
 #def has_non_deterministic(temp_apta):
     #return 0
