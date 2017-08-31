@@ -24,7 +24,7 @@ class Node(object):
     def remove_in_tran(self, in_tran):
         pass
     def set_in_trans(self, in_tran_list):
-        self.in_trans = in_tran_list 
+        self.in_trans = in_tran_list
     def get_in_trans(self):
         return self.in_trans
 
@@ -128,6 +128,17 @@ class APTA(object):
     def add_node(self, node=None):
         self.nodeset.append(node)
 
+    def del_node_by_id(self, nodeid):
+        """delete a node of the apta and delete its in and out transitions
+            from transitionset of the apta"""
+        node = self.find_node_by_id(nodeid)
+        if node is None:
+            return False
+        else:
+            self.nodeset.remove(node)
+            self.del_trans_by_nodeid(node.get_id())
+            return True
+
     def find_node_by_id(self, nodeid):
         for node in self.nodeset:
             if nodeid == node.get_id():
@@ -137,6 +148,23 @@ class APTA(object):
     def add_transition(self, transition=None):
         self.transitionset.append(transition)
 
+    def find_tran_by_id(self, tranid):
+        for transition in self.transitionset:
+            if tranid == transition.get_id():
+                return transition
+        return None
+
+    def del_trans_by_nodeid(self, nodeid):
+        for transition in self.transitionset:
+            if transition.get_sourceid() == nodeid or transition.get_targetid() == nodeid:
+                self.transitionset.remove(transition)
+
+    def del_tran_by_id(self, tranid):
+        transition = self.find_tran_by_id(tranid)
+        if transition is None:
+            return False
+        else:
+            self.transitionset.remove(transition)
 
     def construct(self, pos_training, neg_training):
         if len(pos_training) == 0 or len(neg_training) == 0:
@@ -171,7 +199,6 @@ class APTA(object):
                 else:
                     node.set_nodetype(NodeType.rejecting)
 
-    
     def has_nondeterministic(self):
         """ list like: [[...], [...], [...],...] """
         nondeterministic_list = []
