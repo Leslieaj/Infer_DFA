@@ -114,6 +114,13 @@ class Transition(object):
     def set_targetid(self, targetid):
         self.targetid = targetid
 
+    def similar_to(self, transition):
+        if self.get_sourceid() == transition.get_sourceid() and \
+           self.get_label() == transition.get_label() and \
+           self.get_targetid() == transition.get_targetid():
+            return True
+        return False
+
 class TrainWord(str):
     #def __new__(cls, value):
         #return str.__new__(cls, value)

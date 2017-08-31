@@ -37,15 +37,30 @@ def combine_node(apta, node1_id, node2_id):
     if remove_node_type != NodeType.unknown:
         keep_node.set_nodetype(remove_node_type)
 
-    for in_tran in remove_node.in_trans:
-        in_tran.set_targetid(smaller_id)
-        apta.del_tran_by_id(in_tran.get_id())
-        apta.add_transition(in_tran)
+    keepnode_in_trans_len = len(keep_node.get_in_trans())
+    if keepnode_in_trans_len:
+        for in_tran in remove_node.in_trans:
+            in_tran.set_targetid(smaller_id)
+            apta.del_tran_by_id(in_tran.get_id())
+            for keep_in_tran in keep_node.in_trans:
+                if in_tran.get_sourceid() == keep_in_tran.get_sourceid() and \
+                    in_tran.get_label() == keep_in_tran.get_label() and \
+                    in_tran.get_targetid() == keep_in_tran.get_targetid():
+                    if keep_in_tran.get_id() > in_tran.get_id():
+                        keep_in_tran.set_id(in_tran.get_id())
+                    break
+                else:
+                    keep_node.add_in_tran(in_tran)
+                    apta.add_transition(in_tran)
+                    break
+    else:
+        keep_node.in_trans.extend(remove_node.in_trans)
+
     for out_tran in remove_node.out_trans:
         out_tran.set_sourceid(smaller_id)
         apta.del_tran_by_id(out_tran.get_id())
         apta.add_transition(out_tran)
-    keep_node.in_trans.extend(remove_node.in_trans)
+    #keep_node.in_trans.extend(remove_node.in_trans)
     keep_node.out_trans.extend(remove_node.out_trans)
     apta.del_node_by_id(bigger_id)
 

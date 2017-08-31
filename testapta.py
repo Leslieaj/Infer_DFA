@@ -23,8 +23,17 @@ def main():
     node1 = apta.find_node_by_id(0)
     node2 = apta.find_node_by_id(1)
     temp, flag = merge(apta, node1, node2)
+    node1 = temp.find_node_by_id(2)
+    node2 = temp.find_node_by_id(5)
+    temp1, flag1 = merge(temp, node1, node2)
+
+    apta.show_apta_info()
+    print "*****************************************************************\n"
     if flag is True:
         temp.show_apta_info()
+    print "*****************************************************************\n"
+    if flag1 is True:
+        temp1.show_apta_info()
 
 if __name__ == '__main__':
     main()
