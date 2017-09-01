@@ -25,6 +25,8 @@ def main():
     node1 = apta.find_node_by_id(0)
     node2 = apta.find_node_by_id(1)
     temp, flag = merge(apta, node1, node2)
+    print flag
+    temp.show_apta_info()
     #node1 = temp.find_node_by_id(2)
     #node2 = temp.find_node_by_id(5)
     #temp1, flag1 = merge(temp, node1, node2)
